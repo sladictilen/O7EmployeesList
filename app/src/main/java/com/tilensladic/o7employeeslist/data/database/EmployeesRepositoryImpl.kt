@@ -17,7 +17,7 @@ class EmployeesRepositoryImpl(
         return dao.getEmployees()
     }
 
-    override fun getEmployeeById(id_employee: Int): EmployeeData? {
+    override suspend fun getEmployeeById(id_employee: Int): EmployeeData? {
         return dao.getEmployeeById(id_employee)
     }
 }

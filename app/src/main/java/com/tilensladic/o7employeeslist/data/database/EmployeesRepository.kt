@@ -13,5 +13,5 @@ interface EmployeesRepository {
 
     fun getEmployees(): Flow<List<EmployeeData>>
 
-    fun getEmployeeById(id_employee: Int): EmployeeData?
+    suspend fun getEmployeeById(id_employee: Int): EmployeeData?
 }

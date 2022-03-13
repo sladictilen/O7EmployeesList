@@ -7,15 +7,16 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = BackgroundColor,
+    primaryVariant = BackgroundColorVariant,
+    secondary = GreenColor,
+
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = WhiteColor,
+    primaryVariant = WhiteColor,
+    secondary = GreenColor
 
     /* Other default colors to override
     background = Color.White,
@@ -32,11 +33,14 @@ fun O7EmployeesListTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    // Use only dark theme
+    val colors = DarkColorPalette
+    /*
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
-    }
+    }*/
 
     MaterialTheme(
         colors = colors,

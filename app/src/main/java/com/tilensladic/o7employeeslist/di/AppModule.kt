@@ -21,7 +21,7 @@ object AppModule {
             app,
             EmployeesDatabase::class.java,
             "employees_db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
     @Provides
     @Singleton

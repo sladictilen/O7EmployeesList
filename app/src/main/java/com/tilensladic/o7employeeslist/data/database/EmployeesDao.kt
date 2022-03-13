@@ -15,5 +15,5 @@ interface EmployeesDao{
     fun getEmployees(): Flow<List<EmployeeData>>
 
     @Query("SELECT * FROM EmployeeData WHERE id_employee = :id_employee")
-    fun getEmployeeById(id_employee: Int): EmployeeData?
+    suspend fun getEmployeeById(id_employee: Int): EmployeeData?
 }

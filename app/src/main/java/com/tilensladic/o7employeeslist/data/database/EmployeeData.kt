@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class EmployeeData(
-    @PrimaryKey(autoGenerate = true) val id_employee: Int,
+    @PrimaryKey(autoGenerate = true) val id_employee: Int? = null,
     val name: String,
     val birthday_date: String,
     val gender: String,

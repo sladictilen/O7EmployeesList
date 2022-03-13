@@ -2,7 +2,7 @@ package com.tilensladic.o7employeeslist.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val BackgroundColor = Color(0xFF292929)
+val BackgroundColorVariant = Color(0xFF333333)
+val GreenColor = Color(0xFF31D6B8)
+val WhiteColor = Color(0xFFFFFFFF)
