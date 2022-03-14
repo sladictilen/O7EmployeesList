@@ -30,7 +30,7 @@ fun Navigation() {
                 }
             )
         ) {
-            AddEditEmployeeScreen()
+            AddEditEmployeeScreen(onPopBackStack = { navController.popBackStack() })
         }
 
         composable(
@@ -40,7 +40,7 @@ fun Navigation() {
                     type = NavType.IntType
                     defaultValue = -1
                 }
-            )){
+            )) {
             EmployeeProfileScreen(onPopBackStack = { navController.popBackStack() })
         }
 
