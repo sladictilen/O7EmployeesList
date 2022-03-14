@@ -6,12 +6,16 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tilensladic.o7employeeslist.R
+import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component.CardItem
 import com.tilensladic.o7employeeslist.util.UiEvent
+import com.tilensladic.o7employeeslist.util.components.ProfileImage
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -46,24 +50,48 @@ fun EmployeeProfileScreen(
             )
         }
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Card(
-                elevation = 5.dp,
-                shape = RoundedCornerShape(3.dp),
-                backgroundColor = MaterialTheme.colors.secondary,
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Column() {
-                    Text(text = "Name: ${viewModel.employee?.name} ")
+                ProfileImage(modifier = Modifier.size(150.dp))
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(text = "${viewModel.employee?.name}", fontSize = 24.sp)
+                /* TODO Maybe add Age */
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp), horizontalArrangement = Arrangement.Center
+            ) {
+                Card(
+                    elevation = 5.dp,
+                    shape = RoundedCornerShape(5.dp),
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(5.dp))
+                ) {
+                    Column(modifier = Modifier.padding(10.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            CardItem(
+                                icon = R.drawable.birthday_icon,
+                                label = "Birthday",
+                                content = "${viewModel.employee?.birthday_date}"
+                            )
+                        }
+
+                    }
                 }
             }
+
         }
+
+
     }
 
 }

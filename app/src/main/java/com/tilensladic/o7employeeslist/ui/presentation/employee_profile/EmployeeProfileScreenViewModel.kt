@@ -21,9 +21,9 @@ class EmployeeProfileScreenViewModel @Inject constructor(
     private val employeesRepository: EmployeesRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     var employee by mutableStateOf<EmployeeData?>(null)
         private set
-
 
     private val _uiEvent =  Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
