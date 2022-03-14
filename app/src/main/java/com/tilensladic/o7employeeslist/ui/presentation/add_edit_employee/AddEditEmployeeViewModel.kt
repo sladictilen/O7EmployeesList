@@ -28,7 +28,7 @@ class AddEditEmployeeViewModel @Inject constructor(
         private set
     var birthday by mutableStateOf("")
         private set
-    var gender by mutableStateOf("")
+    var gender by mutableStateOf("Male")
         private set
     var errorVisibilityName by mutableStateOf(false)
         private set

@@ -1,5 +1,6 @@
 package com.tilensladic.o7employeeslist.ui.presentation.employees_list
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tilensladic.o7employeeslist.data.database.EmployeeData
@@ -17,6 +18,7 @@ class EmployeesListScreenViewModel @Inject constructor(
     private val employeesRepository: EmployeesRepository
 ) : ViewModel() {
     val employees = employeesRepository.getEmployees()
+
 
 
     private val _uiEvent = Channel<UiEvent>()

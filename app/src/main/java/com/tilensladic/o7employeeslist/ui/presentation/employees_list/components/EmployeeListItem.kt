@@ -46,17 +46,3 @@ fun EmployeeListItem(
         }
     }
 }
-
-@Preview
-@Composable
-fun Prev() {
-    EmployeeListItem(
-        employee = EmployeeData(
-            0,
-            "Tilen Sladič",
-            "29.05.1996",
-            "Male",
-            salary = 1600.00
-        )
-    )
-}
