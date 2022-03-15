@@ -1,26 +1,54 @@
 package com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tilensladic.o7employeeslist.R
 
 @Composable
 fun GoogleHitItem(headerTitle: String, url: String) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Column() {
-            Text(text = headerTitle)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(3f)
+        ) {
+            Text(
+                text = headerTitle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .horizontalScroll(
+                        rememberScrollState()
+                    )
+                    .padding(start = 5.dp, end = 5.dp)
+            )
         }
-        Column() {
+        val localUri = LocalUriHandler.current
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.5f),
+            horizontalAlignment = Alignment.End
+        ) {
             IconButton(
                 onClick = {
-                    /*TODO Open website*/
+                    localUri.openUri(url)
                 },
                 content = {
                     Icon(
@@ -31,4 +59,5 @@ fun GoogleHitItem(headerTitle: String, url: String) {
             )
         }
     }
+    Divider(Modifier.fillMaxWidth().height(1.dp), color = MaterialTheme.colors.secondary)
 }

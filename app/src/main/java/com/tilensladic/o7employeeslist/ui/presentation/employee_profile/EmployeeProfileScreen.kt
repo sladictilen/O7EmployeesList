@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,9 +16,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tilensladic.o7employeeslist.R
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component.CardItem
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component.GoogleHitItem
+import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.helpers.CustomAlertDialog
 import com.tilensladic.o7employeeslist.util.UiEvent
 import com.tilensladic.o7employeeslist.util.components.ProfileImage
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun EmployeeProfileScreen(
@@ -35,6 +34,7 @@ fun EmployeeProfileScreen(
         }
     }
 
+    CustomAlertDialog()
 
     Scaffold(
         topBar = {
@@ -52,6 +52,17 @@ fun EmployeeProfileScreen(
                 }, actions = {
                     IconButton(
                         onClick = {
+                            viewModel.onEvent(EmployeeProfileEvent.OnDeleteEmployeeClick)
+                        },
+                        content = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.delete_icon),
+                                contentDescription = "delete employee",
+                            )
+                        },
+                    )
+                    IconButton(
+                        onClick = {
                             /* TODO Add OnEditClick */
                         },
                         content = {
@@ -61,6 +72,7 @@ fun EmployeeProfileScreen(
                             )
                         },
                     )
+
                 }
             )
         }
@@ -124,14 +136,17 @@ fun EmployeeProfileScreen(
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Public Profile")
+                        Text(text = "Public Profile", fontSize = 23.sp)
                     }
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        when (viewModel.loading){
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        when (viewModel.loading) {
                             true -> CircularProgressIndicator(color = MaterialTheme.colors.secondary)
-                            else-> {
+                            else -> {
                                 LazyColumn() {
-                                    items(viewModel.result){
+                                    items(viewModel.result) {
                                         GoogleHitItem(headerTitle = it.header, url = it.url)
                                     }
                                 }
@@ -139,20 +154,6 @@ fun EmployeeProfileScreen(
                         }
                     }
                 }
-
-
-
-
-                   /*
-                    TODO MAYBE USE THIS TO OPEN URL
-                    Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                    String keyword= "your query here";
-                    intent.putExtra(SearchManager.QUERY, keyword);
-                    startActivity(intent);
-
-
-                    */
-
 
             }
 

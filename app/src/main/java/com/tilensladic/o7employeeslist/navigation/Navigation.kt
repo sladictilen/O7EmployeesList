@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tilensladic.o7employeeslist.ui.presentation.add_edit_employee.AddEditEmployeeScreen
+import com.tilensladic.o7employeeslist.ui.presentation.analytics.AnalyticsScreen
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.EmployeeProfileScreen
 import com.tilensladic.o7employeeslist.ui.presentation.employees_list.EmployeesListScreen
 import com.tilensladic.o7employeeslist.util.UiEvent
@@ -42,6 +43,10 @@ fun Navigation() {
                 }
             )) {
             EmployeeProfileScreen(onPopBackStack = { navController.popBackStack() })
+        }
+
+        composable(route = Routes.AnalyticsScreen.route) {
+            AnalyticsScreen(onPopBackStack = { navController.popBackStack() })
         }
 
     }

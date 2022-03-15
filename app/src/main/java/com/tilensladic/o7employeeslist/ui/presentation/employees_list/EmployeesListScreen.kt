@@ -42,7 +42,15 @@ fun EmployeesListScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Employees List") },
-                elevation = 5.dp
+                elevation = 5.dp,
+                actions = {
+                    IconButton(onClick = { viewModel.onEvent(EmployeesListEvent.OnAnalyticsClick) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.analytics_icon),
+                            contentDescription = "Analytics"
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -56,7 +64,6 @@ fun EmployeesListScreen(
                 text = { Text(text = "Add Employee") },
                 onClick = { viewModel.onEvent(EmployeesListEvent.OnAddEmployeeClick) }
             )
-
         }
     ) {
         // Body

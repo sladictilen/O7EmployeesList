@@ -19,23 +19,24 @@ class EmployeesListScreenViewModel @Inject constructor(
 ) : ViewModel() {
     val employees = employeesRepository.getEmployees()
 
-
-
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: EmployeesListEvent){
-        when(event){
+    fun onEvent(event: EmployeesListEvent) {
+        when (event) {
             is EmployeesListEvent.OnAddEmployeeClick -> {
                 sendUiEvent(UiEvent.Navigate(Routes.AddEditEmployeeScreen.route))
             }
             is EmployeesListEvent.OnEmployeeClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.EmployeeProfileScreen.route+"?id_employee=${event.id_employee}"))
+                sendUiEvent(UiEvent.Navigate(Routes.EmployeeProfileScreen.route + "?id_employee=${event.id_employee}"))
+            }
+            is EmployeesListEvent.OnAnalyticsClick -> {
+                sendUiEvent(UiEvent.Navigate(Routes.AnalyticsScreen.route))
             }
         }
     }
 
-    private fun sendUiEvent(event: UiEvent){
+    private fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {
             _uiEvent.send(event)
         }

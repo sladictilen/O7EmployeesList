@@ -42,22 +42,33 @@ class EmployeeProfileScreenViewModel @Inject constructor(
     var error by mutableStateOf("")
         private set
 
+    var openDialog by mutableStateOf(false)
+
     init {
         val idEmployee = savedStateHandle.get<Int>("id_employee")!!
         if (idEmployee != -1) {
             viewModelScope.launch {
                 employee = employeesRepository.getEmployeeById(idEmployee)
-                googleScrape("${employee?.name}")
+                googleScrape("${employee?.name?.replace(" ", "+")}")
             }
         }
 
 
     }
 
-
     fun onEvent(event: EmployeeProfileEvent) {
         when (event) {
             is EmployeeProfileEvent.OnBackPressed -> {
+                sendUiEvent(UiEvent.PopBackStack)
+            }
+            is EmployeeProfileEvent.OnDeleteEmployeeClick -> {
+                openDialog = true
+            }
+            is EmployeeProfileEvent.OnConfirmDelete -> {
+                openDialog = false
+                viewModelScope.launch {
+                    employee?.let { employeesRepository.deleteEmployee(it) }
+                }
                 sendUiEvent(UiEvent.PopBackStack)
             }
         }
@@ -72,30 +83,30 @@ class EmployeeProfileScreenViewModel @Inject constructor(
     private suspend fun googleScrape(searchQuery: String) {
         try {
             val data: Document = withContext(Dispatchers.IO) {
-                Jsoup.connect("https://www.google.com/search?q=tilen+sladič").get()
+                Jsoup.connect("https://www.google.com/search?q=$searchQuery").get()
             }
 
             val headers: Elements = data.select("h3")
             val urls: Elements = data.select("#search a") // Search only in div id = Search
             var index = 0
             for (element in headers) {
-                var index2 = 0
-                for (element2 in urls) {
-                    if (index2 == index) {
-
-                        result += GoogleData(
-                            element.text(),
-                            element2.attr("href") // get href value)
-                        )
+                if (index < 5) {
+                    var index2 = 0
+                    for (element2 in urls) {
+                        if (index2 == index) {
+                            result = result + GoogleData(
+                                element.text(),
+                                element2.attr("href") // get href value)
+                            )
+                        }
+                        index2 += 1
                     }
-                    index2 += 1
+                } else {
+                    break
                 }
-
                 index += 1
+
             }
-
-
-
             loading = false
         } catch (e: Exception) {
             //result = "Error fetching data from Google"
