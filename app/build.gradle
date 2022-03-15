@@ -87,4 +87,7 @@ dependencies {
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$roomVersion"
 
+    //Jsoup - For web scraping
+    implementation 'org.jsoup:jsoup:1.14.3'
+
 }

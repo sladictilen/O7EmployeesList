@@ -28,7 +28,7 @@ fun ProfileImage(modifier: Modifier, image: Int = R.drawable.blank_profile_pictu
     ) {
         Image(
             painter = painterResource(id = image),
-            contentDescription = "sad",
+            contentDescription = "Profile image",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )

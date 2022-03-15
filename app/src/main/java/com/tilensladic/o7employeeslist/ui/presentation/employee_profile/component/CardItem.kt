@@ -21,8 +21,8 @@ fun CardItem(icon: Int, label: String, content: String) {
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.birthday_icon),
-                contentDescription = "Birthday"
+                painter = painterResource(id = icon),
+                contentDescription = "Content icon"
             )
         }
         Column(
@@ -30,7 +30,7 @@ fun CardItem(icon: Int, label: String, content: String) {
             modifier = Modifier.padding(start = 10.dp)
         ) {
             Row() {
-                Text(text = label, color = Color.LightGray, fontSize = 14.sp)
+                Text(text = label, color = Color.DarkGray, fontSize = 14.sp)
             }
             Row() {
                 Text(text = content, fontSize = 20.sp)
