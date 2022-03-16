@@ -83,7 +83,7 @@ class EmployeeProfileScreenViewModel @Inject constructor(
     private suspend fun googleScrape(searchQuery: String) {
         try {
             val data: Document = withContext(Dispatchers.IO) {
-                Jsoup.connect("https://www.google.com/search?q=$searchQuery").get()
+                Jsoup.connect("https://www.google.si/search?q=$searchQuery").get()
             }
 
             val headers: Elements = data.select("h3")

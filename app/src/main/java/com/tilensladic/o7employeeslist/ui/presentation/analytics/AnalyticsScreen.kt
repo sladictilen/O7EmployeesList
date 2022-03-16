@@ -1,5 +1,7 @@
 package com.tilensladic.o7employeeslist.ui.presentation.analytics
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +40,18 @@ fun AnalyticsScreen(
             )
         }
     ) {
-        Text(text = "Employees: ${viewModel.employeesCount}")
+        Column() {
+            Row(){
+                Text(text = "Employees: ${viewModel.employeesCount}")
+            }
+            Row(){
+                Text(text = "SummedAge: ${viewModel.summedAge}")
+            }
+            Row(){
+                Text(text = "Average age: ${viewModel.averageAge}")
+            }
+        }
+
+
     }
 }

@@ -1,14 +1,20 @@
 package com.tilensladic.o7employeeslist.ui.presentation.add_edit_employee
 
+import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tilensladic.o7employeeslist.R
 import com.tilensladic.o7employeeslist.util.UiEvent
@@ -95,35 +101,31 @@ fun AddEditEmployeeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 5.dp, bottom = 5.dp),
-                horizontalArrangement = Arrangement.Center
+                    .padding(top = 5.dp, bottom = 5.dp, start = 5.dp, end = 5.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 // TODO implement datepicker
-                TextField(
-                    value = viewModel.birthday,
-                    onValueChange = {
-                        viewModel.onEvent(
-                            AddEditEmployeeEvent.OnBirthdayValueChange(
-                                it
-                            )
-                        )
+
+                val datePickerDialog = DatePickerDialog(
+                    LocalContext.current,
+                    { _, year, month, day ->
+                        viewModel.onEvent(AddEditEmployeeEvent.OnBirthdayValueChange("$day.${month + 1}.$year"))
                     },
-                    label = { Text("Birthday date", color = MaterialTheme.colors.secondary) },
-                    singleLine = true,
-                    colors = TextFieldDefaults.textFieldColors(
-                        cursorColor = MaterialTheme.colors.secondary,
-                        focusedIndicatorColor = MaterialTheme.colors.secondary,
-                        unfocusedIndicatorColor = MaterialTheme.colors.secondary
-                    ),
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.calendar_icon),
-                            contentDescription = "Calendar",
-                            tint = MaterialTheme.colors.secondary
-                        )
-                    }
+                    viewModel.birthdayYear,
+                    viewModel.birthdayMonth,
+                    viewModel.birthdayDay
                 )
+
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(text = "Birthday: ", color = MaterialTheme.colors.secondary)
+                }
+                Column() {
+                    Text(text = viewModel.birthday, modifier = Modifier.clickable {
+                        datePickerDialog.show()
+                    })
+                }
             }
+
             // Salary
             Row(
                 modifier = Modifier

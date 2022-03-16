@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.tilensladic.o7employeeslist.navigation.Navigation
 import com.tilensladic.o7employeeslist.ui.theme.O7EmployeesListTheme
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             O7EmployeesListTheme {
+                val context = LocalContext.current
                 Navigation()
             }
         }

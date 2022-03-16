@@ -15,6 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,12 +23,22 @@ class AddEditEmployeeViewModel @Inject constructor(
     private val employeesRepository: EmployeesRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val calendar = Calendar.getInstance()
+
     var name by mutableStateOf("")
         private set
     var salary by mutableStateOf("")
         private set
-    var birthday by mutableStateOf("")
+
+    var birthday by mutableStateOf("Select Birthday")
         private set
+    var birthdayDay by mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH))
+        private set
+    var birthdayMonth by mutableStateOf(calendar.get(Calendar.MONTH))
+        private set
+    var birthdayYear by mutableStateOf(calendar.get(Calendar.YEAR))
+        private set
+
     var gender by mutableStateOf("Male")
         private set
     var errorVisibilityName by mutableStateOf(false)
