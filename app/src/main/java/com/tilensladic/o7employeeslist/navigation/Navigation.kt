@@ -29,7 +29,7 @@ fun Navigation() {
                     type = NavType.IntType
                     defaultValue = -1
                 }
-            )
+            ),
         ) {
             AddEditEmployeeScreen(onPopBackStack = { navController.popBackStack() })
         }

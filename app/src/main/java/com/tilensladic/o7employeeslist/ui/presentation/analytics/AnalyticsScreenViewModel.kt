@@ -10,13 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.tilensladic.o7employeeslist.data.database.EmployeesRepository
 import com.tilensladic.o7employeeslist.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectIndexed
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.time.measureTime
@@ -32,9 +28,13 @@ class AnalyticsScreenViewModel @Inject constructor(
         private set
     var averageAge by mutableStateOf(0.0)
         private set
-    var summedAge by mutableStateOf(0)
+
+    var maleCount by mutableStateOf(0)
         private set
-    var medianAge by mutableStateOf(0)
+    var femaleCount by mutableStateOf(0)
+        private set
+
+    var medianAge by mutableStateOf(0.0)
         private set
     var highestSalary by mutableStateOf(0.0)
         private set
@@ -43,16 +43,11 @@ class AnalyticsScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getNumberOfEmployees()
-        }
-        viewModelScope.launch {
-            getSummedAge()
-        }
-        viewModelScope.launch {
-            getAverageAge()
+            getData()
         }
 
     }
+
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -64,23 +59,42 @@ class AnalyticsScreenViewModel @Inject constructor(
             }
         }
     }
-    private suspend fun getData(){
-        /*TODO add all analytics in this one*/
-    }
-    private suspend fun getNumberOfEmployees() {
-        employees.collectIndexed { _, value ->
-            employeesCount = value.size
-        }
-    }
 
-    private suspend fun getSummedAge() {
-        employees.collectIndexed { _, value ->
-            for (employee in value) {
-
-                summedAge += getAge(employee.birthday_date)
+    private suspend fun getData() {
+        employees.collectIndexed { _, employeeList ->
+            employeesCount = employeeList.size
+            var currentHighestSalary = 0.0
+            var summedAge = 0
+            var allAges = mutableListOf<Int>()
+            for (employee in employeeList) {
+                val currentAge = getAge(employee.birthday_date)
+                summedAge += currentAge
+                allAges.add(currentAge)
+                if (employee.gender == "Male") {
+                    maleCount++
+                } else {
+                    femaleCount++
+                }
+                if (employee.salary > currentHighestSalary) {
+                    currentHighestSalary = employee.salary
+                }
             }
+            allAges.sortDescending()
+            averageAge = (summedAge / employeesCount).toDouble()
+            highestSalary = currentHighestSalary
+            maleVsFemale = (maleCount / femaleCount).toDouble()
+
+            if ((allAges.size % 2) != 0) {  // if odd size
+                medianAge = allAges[(allAges.size - 2) / 2].toDouble()
+            } else { // if even size
+                medianAge =
+                    ((allAges[allAges.size / 2].toDouble() + allAges[(allAges.size / 2) - 1].toDouble()) / 2)
+            }
+
+
         }
     }
+
 
     private fun getAge(birthday: String): Int {
         val birthdayArr = birthday.split(".").map { it.toInt() }
@@ -98,20 +112,12 @@ class AnalyticsScreenViewModel @Inject constructor(
         return if (birthdayMonth > todayMonth) {
             age--
             age
-        } else{
-            if(birthdayMonth == todayMonth && todayDay < birthdayDay){
+        } else {
+            if (birthdayMonth == todayMonth && todayDay < birthdayDay) {
                 age--
             }
             age
         }
-    }
-
-    private suspend fun getAverageAge(): Double {
-        return (summedAge / employeesCount).toDouble()
-    }
-
-    private fun getMedianAge() {
-
     }
 
 

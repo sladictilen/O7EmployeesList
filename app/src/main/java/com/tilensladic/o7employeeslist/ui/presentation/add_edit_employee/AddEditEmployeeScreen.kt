@@ -1,6 +1,7 @@
 package com.tilensladic.o7employeeslist.ui.presentation.add_edit_employee
 
 import android.app.DatePickerDialog
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,11 +27,17 @@ fun AddEditEmployeeScreen(
     viewModel: AddEditEmployeeViewModel = hiltViewModel(),
     onPopBackStack: () -> Unit
 ) {
+    val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.PopBackStack -> onPopBackStack()
-                else -> {}
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        event.message
+                    )
+                }
+                else -> Unit
             }
         }
     }
@@ -55,6 +62,7 @@ fun AddEditEmployeeScreen(
                 .padding(5.dp)
                 .fillMaxSize()
         ) {
+            // profile picture
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -62,11 +70,27 @@ fun AddEditEmployeeScreen(
             ) {
                 ProfileImage(modifier = Modifier.size(150.dp))
             }
+            // error
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column {
+                    AnimatedVisibility(visible = viewModel.errorVisibility) {
+                        Text(
+                            "Fill in all fields. (Name, salary, birthday, gender)",
+                            color = Color.Red
+                        )
+                    }
+                }
+            }
             // Name
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 5.dp),
+                    .padding(bottom = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextField(
@@ -85,7 +109,7 @@ fun AddEditEmployeeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 5.dp, bottom = 5.dp),
+                    .padding(top = 5.dp, bottom = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 CustomToggleButton(
@@ -101,11 +125,9 @@ fun AddEditEmployeeScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 5.dp, bottom = 5.dp, start = 5.dp, end = 5.dp),
+                    .padding(top = 5.dp, bottom = 10.dp, start = 5.dp, end = 5.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                // TODO implement datepicker
-
                 val datePickerDialog = DatePickerDialog(
                     LocalContext.current,
                     { _, year, month, day ->
