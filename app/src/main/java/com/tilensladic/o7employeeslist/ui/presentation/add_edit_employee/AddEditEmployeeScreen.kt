@@ -27,7 +27,6 @@ fun AddEditEmployeeScreen(
     onPopBackStack: () -> Unit,
     onNavigate: (UiEvent.Navigate) -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -137,7 +136,7 @@ fun AddEditEmployeeScreen(
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(text = "Birthday: ", color = MaterialTheme.colors.secondary)
                 }
-                Column() {
+                Column {
                     Text(text = viewModel.birthday, modifier = Modifier.clickable {
                         datePickerDialog.show()
                     })

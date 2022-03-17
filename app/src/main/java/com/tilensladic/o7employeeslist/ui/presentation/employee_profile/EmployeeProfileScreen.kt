@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.OnLifecycleEvent
 import com.tilensladic.o7employeeslist.R
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component.CardItem
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.component.GoogleHitItem
@@ -151,7 +148,7 @@ fun EmployeeProfileScreen(
                         when (viewModel.loading) {
                             true -> CircularProgressIndicator(color = MaterialTheme.colors.secondary)
                             else -> {
-                                LazyColumn() {
+                                LazyColumn {
                                     items(viewModel.result) {
                                         GoogleHitItem(headerTitle = it.header, url = it.url)
                                     }

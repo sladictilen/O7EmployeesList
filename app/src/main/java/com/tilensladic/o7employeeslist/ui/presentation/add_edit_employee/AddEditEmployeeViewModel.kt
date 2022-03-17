@@ -31,8 +31,7 @@ class AddEditEmployeeViewModel @Inject constructor(
         private set
     var button by mutableStateOf("Add employee")
         private set
-    var editing by mutableStateOf(false)    // to know if we are adding or editing
-        private set
+    private var editing by mutableStateOf(false)    // to know if we are adding or editing
 
 
     var name by mutableStateOf("")
@@ -63,6 +62,7 @@ class AddEditEmployeeViewModel @Inject constructor(
                 employee = idEmployee?.let { employeesRepository.getEmployeeById(it) }
                 name = employee?.name.toString()
                 salary = employee?.salary.toString()
+                gender = employee?.gender.toString()
                 birthday = employee?.birthday_date.toString()
             }
         }

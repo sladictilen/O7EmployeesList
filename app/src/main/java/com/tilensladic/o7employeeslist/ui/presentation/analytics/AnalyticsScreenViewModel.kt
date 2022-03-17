@@ -1,7 +1,5 @@
 package com.tilensladic.o7employeeslist.ui.presentation.analytics
 
-import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,16 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.tilensladic.o7employeeslist.data.database.EmployeesRepository
 import com.tilensladic.o7employeeslist.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectIndexed
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import kotlin.time.measureTime
 
 @HiltViewModel
 class AnalyticsScreenViewModel @Inject constructor(
-    private val employeesRepository: EmployeesRepository
+    employeesRepository: EmployeesRepository
 ) : ViewModel() {
 
     private val employees = employeesRepository.getEmployees()
@@ -84,9 +82,11 @@ class AnalyticsScreenViewModel @Inject constructor(
                 averageAge = (summedAge / employeesCount).toDouble()
                 highestSalary = currentHighestSalary
                 // Male vs female ratio
-                if (maleCount > 0 && femaleCount > 0) {
+                maleVsFemale = if (maleCount > 0 && femaleCount > 0) {
                     val delitelj = najvecjiSkupniDelitelj(maleCount, femaleCount)
-                    maleVsFemale = "${maleCount / delitelj} : ${femaleCount / delitelj}"
+                    "${maleCount / delitelj} : ${femaleCount / delitelj}"
+                } else {
+                    "$maleCount : $femaleCount"
                 }
 
                 medianAge = if ((allAges.size % 2) != 0) {  // if odd size

@@ -50,7 +50,7 @@ fun AnalyticsScreen(
                 backgroundColor = MaterialTheme.colors.secondary,
                 modifier = Modifier.padding(10.dp)
             ) {
-                Column() {
+                Column {
                     AnalyticsItem(
                         label = "Number of employees",
                         content = "${viewModel.employeesCount}"

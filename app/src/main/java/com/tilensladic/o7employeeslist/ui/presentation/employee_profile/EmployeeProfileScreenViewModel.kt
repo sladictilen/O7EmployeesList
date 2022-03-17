@@ -39,7 +39,6 @@ class EmployeeProfileScreenViewModel @Inject constructor(
         private set
     var result by mutableStateOf(listOf<GoogleData>())
         private set
-
     var openDialog by mutableStateOf(false)
 
     init {

@@ -1,9 +1,7 @@
 package com.tilensladic.o7employeeslist.ui.presentation.employees_list
 
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tilensladic.o7employeeslist.data.database.EmployeeData
 import com.tilensladic.o7employeeslist.data.database.EmployeesRepository
 import com.tilensladic.o7employeeslist.navigation.Routes
 import com.tilensladic.o7employeeslist.util.UiEvent
@@ -15,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EmployeesListScreenViewModel @Inject constructor(
-    private val employeesRepository: EmployeesRepository
+    employeesRepository: EmployeesRepository
 ) : ViewModel() {
     val employees = employeesRepository.getEmployees()
 
