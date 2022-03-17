@@ -4,4 +4,5 @@ sealed class EmployeeProfileEvent {
     object OnBackPressed: EmployeeProfileEvent()
     object OnDeleteEmployeeClick: EmployeeProfileEvent()
     object OnConfirmDelete: EmployeeProfileEvent()
+    object OnEditClick: EmployeeProfileEvent()
 }

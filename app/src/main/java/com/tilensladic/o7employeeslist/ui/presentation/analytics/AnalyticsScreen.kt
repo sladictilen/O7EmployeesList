@@ -55,12 +55,20 @@ fun AnalyticsScreen(
                         label = "Number of employees",
                         content = "${viewModel.employeesCount}"
                     )
+                    AnalyticsItem(
+                        label = "Male employees",
+                        content = "${viewModel.maleCount}"
+                    )
+                    AnalyticsItem(
+                        label = "Female employees",
+                        content = "${viewModel.femaleCount}"
+                    )
                     AnalyticsItem(label = "Highest salary", content = "${viewModel.highestSalary}€")
                     AnalyticsItem(label = "Average age", content = "${viewModel.averageAge}")
                     AnalyticsItem(label = "Median age", content = "${viewModel.medianAge}")
                     AnalyticsItem(
-                        label = "Male vs. Female ratio",
-                        content = "${viewModel.maleCount}:${viewModel.femaleCount} - ${viewModel.maleVsFemale}"
+                        label = "Male vs. Female ratio simplified",
+                        content = viewModel.maleVsFemale
                     )
                 }
             }

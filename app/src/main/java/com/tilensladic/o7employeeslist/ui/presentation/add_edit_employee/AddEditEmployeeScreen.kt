@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tilensladic.o7employeeslist.R
 import com.tilensladic.o7employeeslist.util.UiEvent
@@ -25,18 +24,15 @@ import com.tilensladic.o7employeeslist.util.components.ProfileImage
 @Composable
 fun AddEditEmployeeScreen(
     viewModel: AddEditEmployeeViewModel = hiltViewModel(),
-    onPopBackStack: () -> Unit
+    onPopBackStack: () -> Unit,
+    onNavigate: (UiEvent.Navigate) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.PopBackStack -> onPopBackStack()
-                is UiEvent.ShowSnackbar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        event.message
-                    )
-                }
+                is UiEvent.Navigate -> onNavigate(event)
                 else -> Unit
             }
         }
@@ -45,7 +41,7 @@ fun AddEditEmployeeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Add new employee") },
+                title = { Text(text = viewModel.title) },
                 navigationIcon = {
                     IconButton(onClick = { viewModel.onEvent(AddEditEmployeeEvent.OnBackOrCancelClick) }) {
                         Icon(
@@ -129,7 +125,7 @@ fun AddEditEmployeeScreen(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 val datePickerDialog = DatePickerDialog(
-                    LocalContext.current,
+                    LocalContext.current, R.style.DatePickerDialogDark,
                     { _, year, month, day ->
                         viewModel.onEvent(AddEditEmployeeEvent.OnBirthdayValueChange("$day.${month + 1}.$year"))
                     },
@@ -199,10 +195,10 @@ fun AddEditEmployeeScreen(
 
                 Column(modifier = Modifier.padding(5.dp)) {
                     Button(
-                        onClick = { viewModel.onEvent(AddEditEmployeeEvent.OnAddEmployeeClick) },
+                        onClick = { viewModel.onEvent(AddEditEmployeeEvent.OnAddEditEmployeeClick) },
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
                     ) {
-                        Text(text = "Add Employee")
+                        Text(text = viewModel.button)
                     }
                 }
 

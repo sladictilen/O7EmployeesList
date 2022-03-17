@@ -38,7 +38,7 @@ class AnalyticsScreenViewModel @Inject constructor(
         private set
     var highestSalary by mutableStateOf(0.0)
         private set
-    var maleVsFemale by mutableStateOf(0.0)
+    var maleVsFemale by mutableStateOf("")
         private set
 
     init {
@@ -63,36 +63,46 @@ class AnalyticsScreenViewModel @Inject constructor(
     private suspend fun getData() {
         employees.collectIndexed { _, employeeList ->
             employeesCount = employeeList.size
-            var currentHighestSalary = 0.0
-            var summedAge = 0
-            var allAges = mutableListOf<Int>()
-            for (employee in employeeList) {
-                val currentAge = getAge(employee.birthday_date)
-                summedAge += currentAge
-                allAges.add(currentAge)
-                if (employee.gender == "Male") {
-                    maleCount++
-                } else {
-                    femaleCount++
+            if (employeesCount > 0) {   // else we divide by zero
+                var currentHighestSalary = 0.0
+                var summedAge = 0
+                val allAges = mutableListOf<Int>()
+                for (employee in employeeList) {
+                    val currentAge = getAge(employee.birthday_date)
+                    summedAge += currentAge
+                    allAges.add(currentAge)
+                    if (employee.gender == "Male") {
+                        maleCount++
+                    } else {
+                        femaleCount++
+                    }
+                    if (employee.salary > currentHighestSalary) {
+                        currentHighestSalary = employee.salary
+                    }
                 }
-                if (employee.salary > currentHighestSalary) {
-                    currentHighestSalary = employee.salary
+                allAges.sortDescending()
+                averageAge = (summedAge / employeesCount).toDouble()
+                highestSalary = currentHighestSalary
+                // Male vs female ratio
+                if (maleCount > 0 && femaleCount > 0) {
+                    val delitelj = najvecjiSkupniDelitelj(maleCount, femaleCount)
+                    maleVsFemale = "${maleCount / delitelj} : ${femaleCount / delitelj}"
                 }
-            }
-            allAges.sortDescending()
-            averageAge = (summedAge / employeesCount).toDouble()
-            highestSalary = currentHighestSalary
-            maleVsFemale = (maleCount / femaleCount).toDouble()
 
-            if ((allAges.size % 2) != 0) {  // if odd size
-                medianAge = allAges[(allAges.size - 2) / 2].toDouble()
-            } else { // if even size
-                medianAge =
+                medianAge = if ((allAges.size % 2) != 0) {  // if odd size
+                    allAges[(allAges.size - 2) / 2].toDouble()
+                } else { // if even size
                     ((allAges[allAges.size / 2].toDouble() + allAges[(allAges.size / 2) - 1].toDouble()) / 2)
+                }
             }
-
 
         }
+    }
+
+    private fun najvecjiSkupniDelitelj(x: Int, y: Int): Int {
+        if (x == y) return x
+        return if (x > y) najvecjiSkupniDelitelj(x - y, y)
+        else najvecjiSkupniDelitelj(y - x, x)
     }
 
 

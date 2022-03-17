@@ -1,22 +1,22 @@
 package com.tilensladic.o7employeeslist.ui.presentation.employee_profile
 
-import android.util.Log
-import android.util.Log.ERROR
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tilensladic.o7employeeslist.data.database.EmployeeData
 import com.tilensladic.o7employeeslist.data.database.EmployeesRepository
+import com.tilensladic.o7employeeslist.navigation.Routes
 import com.tilensladic.o7employeeslist.ui.presentation.employee_profile.helpers.GoogleData
 import com.tilensladic.o7employeeslist.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -38,8 +38,6 @@ class EmployeeProfileScreenViewModel @Inject constructor(
     var loading by mutableStateOf(true)
         private set
     var result by mutableStateOf(listOf<GoogleData>())
-        private set
-    var error by mutableStateOf("")
         private set
 
     var openDialog by mutableStateOf(false)
@@ -71,6 +69,8 @@ class EmployeeProfileScreenViewModel @Inject constructor(
                 }
                 sendUiEvent(UiEvent.PopBackStack)
             }
+            is EmployeeProfileEvent.OnEditClick ->
+                sendUiEvent(UiEvent.Navigate(Routes.AddEditEmployeeScreen.route + "?id_employee=${employee?.id_employee}"))
         }
     }
 

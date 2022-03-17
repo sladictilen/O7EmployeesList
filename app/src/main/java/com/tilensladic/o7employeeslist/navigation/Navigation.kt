@@ -31,7 +31,13 @@ fun Navigation() {
                 }
             ),
         ) {
-            AddEditEmployeeScreen(onPopBackStack = { navController.popBackStack() })
+            AddEditEmployeeScreen(
+                onPopBackStack = { navController.popBackStack() },
+                onNavigate = {
+                    navController.navigate(it.route) {
+                        popUpTo(Routes.EmployeesListScreen.route)
+                    }
+                })
         }
 
         composable(
@@ -42,7 +48,9 @@ fun Navigation() {
                     defaultValue = -1
                 }
             )) {
-            EmployeeProfileScreen(onPopBackStack = { navController.popBackStack() })
+            EmployeeProfileScreen(
+                onPopBackStack = { navController.popBackStack() },
+                onNavigate = { navController.navigate(it.route) })
         }
 
         composable(route = Routes.AnalyticsScreen.route) {

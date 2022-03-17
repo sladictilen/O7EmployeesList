@@ -5,6 +5,6 @@ sealed class AddEditEmployeeEvent {
     data class OnBirthdayValueChange(val birthday: String) : AddEditEmployeeEvent()
     data class OnSalaryValueChange(val salary: String) : AddEditEmployeeEvent()
     data class OnGenderValueChange(val gender: String) : AddEditEmployeeEvent()
-    object OnAddEmployeeClick : AddEditEmployeeEvent()
+    object OnAddEditEmployeeClick : AddEditEmployeeEvent()
     object OnBackOrCancelClick : AddEditEmployeeEvent()
 }
